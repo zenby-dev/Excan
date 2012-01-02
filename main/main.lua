@@ -53,7 +53,7 @@ function love.run()
 
 			g.push()
 
-			try(function()
+			--[[try(function()
 
 			local w, h = love.graphics.getWWidth(), love.graphics.getWHeight()
 
@@ -71,11 +71,19 @@ function love.run()
 
 				end
 
+				local function saferes()
+					local x = (SETTINGS.RESOLUTION.x or 800)
+					if x == 0 then x = SETTINGS.WINDOWSIZE.x end
+					local y = (SETTINGS.RESOLUTION.y or 600)
+					if y == 0 then y = SETTINGS.WINDOWSIZE.y end
+					return Vec2()
+				end
+
 				g.scale(w / (SETTINGS.RESOLUTION.x or 800), h / (SETTINGS.RESOLUTION.y or 600))
 
 			end
 
-			end)
+			end)]]
 			--if not PRES then print(w / (SETTINGS.RESOLUTION.x or 800), h / (SETTINGS.RESOLUTION.y or 600)) PRES = true end
 
 			if love.draw then if not xpcall(function() love.draw() end, error_handler) then love.draw = nil end end
@@ -209,9 +217,13 @@ function love.load() --LEF loading
 	sfont = love.graphics.newFont('VeraMono.ttf', 32) --basic font
 
 	SETTINGS = loadtable("config/settings.lua")
-	love.graphics.setMode(SETTINGS.WINDOWSIZE.x, SETTINGS.WINDOWSIZE.y, SETTINGS.FULLSCREEN, SETTINGS.VSYNC, SETTINGS.FSAA)
+	if SETTINGS.FULLSCREEN then
+		love.graphics.setMode(0, 0, true, SETTINGS.VSYNC, SETTINGS.FSAA)
+	else
+		love.graphics.setMode(SETTINGS.RESOLUTION.x, SETTINGS.RESOLUTION.y, false, SETTINGS.VSYNC, SETTINGS.FSAA)
+	end
 
-	TEXTFRMBUFFER = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
+	--TEXTFRMBUFFER = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
 
 	include("game/main.lua") --load the game
 	
@@ -303,7 +315,7 @@ end
 
 love.graphics.getWWidth, love.graphics.getWHeight = love.graphics.getWidth, love.graphics.getHeight
 
-function love.graphics.getWidth()
+--[[function love.graphics.getWidth()
 
 	return SETTINGS.RESOLUTION.x
 
@@ -313,7 +325,7 @@ function love.graphics.getHeight()
 
 	return SETTINGS.RESOLUTION.y
 
-end
+end]]
 
 function ResToWind()
 
@@ -360,7 +372,7 @@ function WindToRes()
 end
 
 
-love.graphics.oprint = love.graphics.print
+--[[love.graphics.oprint = love.graphics.print
 
 function love.graphics.print(t, x, y, r, sx, sy)
 
@@ -383,4 +395,4 @@ function love.graphics.print(t, x, y, r, sx, sy)
 	ts = ResToWind()
 	g.draw(TEXTFRMBUFFER, 0, 0)
 
-end
+end]]

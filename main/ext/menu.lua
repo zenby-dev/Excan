@@ -220,8 +220,21 @@ function Menu.Options() --the ingame version of the menu
 		return b and "On" or "Off"
 	end
 
+	local ts = {}
+
+	for k, v in pairs(SETTINGS) do
+
+		ts[k] = v
+		if type(v) == "table" and v.__type == "Vec2" then
+
+			ts[k] = Vec2(v.x, v.y)
+
+		end
+
+	end
+
 	local function save()
-		local tstr = tabletostring(SETTINGS)
+		local tstr = tabletostring(ts)
 		local fs = love.filesystem
 
 		fs.mkdir("config")
@@ -231,52 +244,81 @@ function Menu.Options() --the ingame version of the menu
 		saved = true
 	end
 
-	Menu.Button(Vec2(40, h(0)), "Fullscreen: ["..OF(SETTINGS.FULLSCREEN).."]", function()
-		SETTINGS.FULLSCREEN = not SETTINGS.FULLSCREEN
-		Menu.Options() --reload
-	end)
+	local function createbuttons()
 
-	Menu.Button(Vec2(40, h(1)), "Enable VSYNC: ["..OF(SETTINGS.VSYNC).."]", function()
-		SETTINGS.VSYNC = not SETTINGS.VSYNC
-		Menu.Options() --reload
-	end)
-
-	Menu.Input(Vec2(40, h(2)), "FSAA Buffers ["..SETTINGS.FSAA.."] (0 - 10, default 0): ", function(text)
-		local num = tonumber(text)
-
-		if num < 0 or num > 10 then return end
-
-		SETTINGS.FSAA = num
-		Menu.Options() --reload
-	end)
-
-	Menu.Button(Vec2(40, h(4)), "Save", function()
-
-		save()
-
-	end)
-
-	Menu.Button(Vec2(40, h(5)), "Back (Restart to apply changes)", function()
-
-		if not saved then
-
-			YesNoBox("Save Changes?",
-			function()
-				save()
-				GoToMainMenu()
-			end,
-			function()
-				GoToMainMenu()
-			end,
-			true)
-
-		else
-
-			GoToMainMenu()
-
+		local function reload()
+			Menu.Clear()
+			createbuttons()
 		end
 
-	end)
+		Menu.Button(Vec2(40, h(0)), "Fullscreen: ["..OF(ts.FULLSCREEN).."]", function()
+			ts.FULLSCREEN = not ts.FULLSCREEN
+			reload()
+		end)
+
+		Menu.Button(Vec2(40, h(1)), "Enable VSYNC: ["..OF(ts.VSYNC).."]", function()
+			ts.VSYNC = not ts.VSYNC
+			reload()
+		end)
+
+		Menu.Input(Vec2(40, h(2)), "FSAA Buffers ["..ts.FSAA.."] (0 - 10, default 0): ", function(text)
+			local num = tonumber(text)
+
+			if num < 0 or num > 10 then return end
+
+			ts.FSAA = num
+			reload()
+		end)
+
+		Menu.Input(Vec2(40, h(3)), "Resolution X ["..love.graphics.getWidth().."]: ", function(text)
+			local num = tonumber(text)
+
+			if num < 0 or num > 5000 then return end --set manually if you want to go higher
+
+			ts.RESOLUTION.x = num
+			reload()
+		end)
+
+		Menu.Input(Vec2(40, h(4)), "           Y ["..love.graphics.getHeight ().."]: ", function(text)
+			local num = tonumber(text)
+
+			if num < 0 or num > 5000 then return end --set manually if you want to go higher
+
+			ts.RESOLUTION.y = num
+			reload()
+		end)
+
+		Menu.Button(Vec2(40, h(5)), "Save", function()
+
+			save()
+
+		end)
+
+		Menu.Button(Vec2(40, h(6)), "Back (Restart to apply changes)", function()
+
+			if not saved then
+
+				YesNoBox("Save Changes?",
+				function()
+					save()
+					GoToMainMenu()
+				end,
+				function()
+					GoToMainMenu()
+				end,
+				true)
+
+			else
+
+				GoToMainMenu()
+
+			end
+
+		end)
+
+	end
+
+	createbuttons()
 
 end
 
