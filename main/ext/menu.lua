@@ -270,7 +270,9 @@ function Menu.Options() --the ingame version of the menu
 			reload()
 		end)
 
-		Menu.Input(Vec2(40, h(3)), "Resolution X ["..love.graphics.getWidth().."]: ", function(text)
+		local resx = ts.RESOLUTION.x.." ("..love.graphics.getWidth()..")"
+
+		Menu.Input(Vec2(40, h(3)), "Resolution X ["..resx.."]: ", function(text)
 			local num = tonumber(text)
 
 			if num < 0 or num > 5000 then return end --set manually if you want to go higher
@@ -279,7 +281,9 @@ function Menu.Options() --the ingame version of the menu
 			reload()
 		end)
 
-		Menu.Input(Vec2(40, h(4)), "           Y ["..love.graphics.getHeight ().."]: ", function(text)
+		local resy = ts.RESOLUTION.y.." ("..love.graphics.getHeight()..")"
+
+		Menu.Input(Vec2(40, h(4)), "           Y ["..resy.."]: ", function(text)
 			local num = tonumber(text)
 
 			if num < 0 or num > 5000 then return end --set manually if you want to go higher
