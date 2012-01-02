@@ -57,7 +57,7 @@ function goo.textinput:draw(x,y)
 		self:setColor( self.style.cursorColor )
 		local w = self.font:getWidth( self.lines[self.linePos]:sub(1,self.caretPos-1) )
 		w = math.min( w, self.w - 15 )
-		love.graphics.rectangle('fill', w+5, 7+(self.leading*(self.linePos-1)), self.style.cursorWidth, self.fontH*0.7)
+		love.graphics.rectangle('fill', w+5, 3+(self.leading*(self.linePos-1)), self.style.cursorWidth, self.fontH*0.7)
 	end
 	love.graphics.setScissor()
 end
@@ -86,7 +86,7 @@ function goo.textinput:keyText(key,unicode)
 	self.caretPos = self.caretPos + 1
 end
 function goo.textinput:keyReturn()
-	if self.onKeyReturn then self:onKeyReturn() end
+	if self.onKeyReturn then self:onKeyReturn(self:getText()) end
 	if not self.multiline then return end
 	if self.caretPos > self.lines[self.linePos]:len() then
 		self.linePos = self.linePos + 1

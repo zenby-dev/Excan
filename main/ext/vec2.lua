@@ -4,6 +4,7 @@ function Vec2:__init(x, y)
 
 	self.x = x or 0
 	self.y = y or 0
+	self.__type = "Vec2"
 
 end
 

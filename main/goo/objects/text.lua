@@ -6,6 +6,7 @@ function goo.text:initialize( parent )
 end
 function goo.text:draw(x,y)
 	love.graphics.setColor( unpack(self.color) )
+	love.graphics.setFont(self.style.font)
 	love.graphics.print( self.text, x, y )
 end
 function goo.text:setText( text )

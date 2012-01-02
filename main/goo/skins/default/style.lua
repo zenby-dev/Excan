@@ -30,6 +30,10 @@ style['goo close button'] = {
 	colorHover = {255,0,0}
 }
 
+style['goo static text'] = {
+	font = fonts.veramono24
+}
+
 style['goo button'] = {
 	backgroundColor = {100,100,100},
 	backgroundColorHover = {131,203,21},

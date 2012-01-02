@@ -8,22 +8,42 @@
 Menu = {} --ZenX2's menu class. again, dangerous.
 
 Menu.Buttons = {} --Buttons
+Menu.Inputs = {}
 Menu.Images = {} --Images
+Menu.Font = love.graphics.newFont('VeraMono.ttf', 24)
 
 --Menu.LFont = love.graphics.newFont('VeraMono.ttf', 18)
 
 Menu.Open = false --Is a menu open?
 Menu.OnMainMenu = false --is it the main menu?
 
+Menu.Holder = goo.null:new()
+
 function Menu.Button(p, t, f) --create a button
 
-	local button = goo.menubutton:new()
+	local button = goo.menubutton:new(Menu.Holder)
 	button:setPos(p.x, p.y)
 	button:setText(t)
 	button:sizeToText()
 	button.onClick = f
 
 	table.insert(Menu.Buttons, button)
+
+end
+
+function Menu.Input(p, t, f) --create a button
+
+	local textinput = goo.textinput:new(Menu.Holder)
+	local tip = p + Vec2(Menu.Font:getWidth(t) + 5, 7)
+	textinput:setPos(tip.x, tip.y)
+	textinput:setSize(100, textinput.fontH + 3)
+	function textinput:onKeyReturn(text)
+
+		f(text)
+
+	end
+
+	table.insert(Menu.Inputs, {t, p, textinput})
 
 end
 
@@ -52,6 +72,12 @@ function Menu.Clear() --no moar buttons
 
 	end
 	Menu.Buttons = {}
+	for k, v in pairs(Menu.Inputs) do
+
+		v[3]:removeFromParent()
+
+	end
+	Menu.Inputs = {}
 	for k, v in pairs(Menu.Images) do
 
 		v:Remove()
@@ -71,6 +97,15 @@ local function Draw()
 
 	if not Menu.Open then Menu.ButtonVisibility(false) return end
 	Menu.ButtonVisibility(true)
+
+	local g = love.graphics
+
+	for k, v in pairs(Menu.Inputs) do
+
+		g.setFont(Menu.Font)
+		g.print(v[1], v[2].x, v[2].y)
+
+	end
 
 	--love.graphics.setFont(Menu.LFont)
 	--[[for k, v in pairs(Menu.Buttons) do
@@ -144,22 +179,102 @@ function Menu.Main()
 
 	--Menu.Image(Vec2(350, 40), "resources/polycode_logo.png")
 
-	Menu.Button(Vec2(20, 40), "HI", function()
+	local function h(i) return 40 + (i * 60) end
+
+	Menu.Button(Vec2(20, h(0)), "New Game", function()
 
 		Menu.Clear()
 		Menu.OnMainMenu = false
 
 	end)
 
-	--[[Menu.Button(Vec2(40, 360), "Options", function()
+	Menu.Button(Vec2(20, h(1)), "Load Game", function()
 
 
 
-	end)]]
+	end)
 
-	Menu.Button(Vec2(20, 200), "Exit", function()
+	Menu.Button(Vec2(20, h(3)), "Options", function()
+
+		Menu.Options()
+
+	end)
+
+	Menu.Button(Vec2(20, h(5)), "Exit", function()
 
 		love.event.push("q")
+
+	end)
+
+end
+
+function Menu.Options() --the ingame version of the menu
+
+	Menu.Clear()
+
+	local saved = false
+
+	local function h(i) return 40 + (i * 60) end
+
+	local function OF(b)
+		return b and "On" or "Off"
+	end
+
+	local function save()
+		local tstr = tabletostring(SETTINGS)
+		local fs = love.filesystem
+
+		fs.mkdir("config")
+
+		fs.write("config/settings.lua", tstr)
+
+		saved = true
+	end
+
+	Menu.Button(Vec2(40, h(0)), "Fullscreen: ["..OF(SETTINGS.FULLSCREEN).."]", function()
+		SETTINGS.FULLSCREEN = not SETTINGS.FULLSCREEN
+		Menu.Options() --reload
+	end)
+
+	Menu.Button(Vec2(40, h(1)), "Enable VSYNC: ["..OF(SETTINGS.VSYNC).."]", function()
+		SETTINGS.VSYNC = not SETTINGS.VSYNC
+		Menu.Options() --reload
+	end)
+
+	Menu.Input(Vec2(40, h(2)), "FSAA Buffers ["..SETTINGS.FSAA.."] (0 - 10, default 0): ", function(text)
+		local num = tonumber(text)
+
+		if num < 0 or num > 10 then return end
+
+		SETTINGS.FSAA = num
+		Menu.Options() --reload
+	end)
+
+	Menu.Button(Vec2(40, h(4)), "Save", function()
+
+		save()
+
+	end)
+
+	Menu.Button(Vec2(40, h(5)), "Back (Restart to apply changes)", function()
+
+		if not saved then
+
+			YesNoBox("Save Changes?",
+			function()
+				save()
+				GoToMainMenu()
+			end,
+			function()
+				GoToMainMenu()
+			end,
+			true)
+
+		else
+
+			GoToMainMenu()
+
+		end
 
 	end)
 

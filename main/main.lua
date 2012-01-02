@@ -106,22 +106,26 @@ function love.run()
 						return
 					end
 				elseif e == "kp" then
-					--[[if love.keypressed then
-						-- if exists, call love.draw. on error, remove function
-						if not xpcall(function() love.keypressed(a, b) end, error_handler) then
-							love.keypressed = nil
+					if not console_active then
+
+						if love.keypressed then
+							-- if exists, call love.keypressed. on error, remove function
+							KeyPressed(a, b)
+							try(function() love.keypressed(a, b) end)
 						end
-					end]]
-					
+
+
+					else
+
+						console:keypressed(a,b)
+
+					end
+
 					if a == 'f1' then
 						console_active = not console_active
 					end
 
 					if a == 'f12' then love.event.push("q") end
-
-					if console_active then
-						console:keypressed(a,b)
-					end
 				end
 				love.handlers[e](a,b,c)
 			end
@@ -156,6 +160,7 @@ function try(f, ef)
 end
 
 function love.load() --LEF loading
+	love.filesystem.setIdentity("Excan")
 	math.randomseed(os.time()) --Set up a random seed
 	math.random() math.random() math.random() --toss the salad
 	require("conf") --load conf
@@ -258,7 +263,15 @@ end
 
 function love.keypressed(key, uni)
 
-	hook.Call("KeyPressed", key)
+	--print(key, uni)
+	--hook.Call("KeyPressed", key, uni)
+	--try(function() goo:keypressed(key, uni) end)
+
+end
+
+function KeyPressed(key, uni)
+
+	hook.Call("KeyPressed", key, uni)
 	try(function() goo:keypressed(key, uni) end)
 
 end
