@@ -23,7 +23,7 @@ local handler_names = {
 function love.run()
 	if love.load then xpcall(function() love.load(arg) end, error_handler) end
 
-	love.keyboard.setKeyRepeat(150, 50)
+	--love.keyboard.setKeyRepeat(150, 50)
 	love.graphics.setBackgroundColor(34,34,34)
 	local font = love.graphics.newFont('VeraMono.ttf', 14)
 	console = Console.new(font)
@@ -114,6 +114,7 @@ function love.run()
 						return
 					end
 				elseif e == "kp" then
+					--love.keyboard.setKeyRepeat(250, 100) --STAY AT THIS ANYTHING ELSE SUUUUUCKS
 					if not console_active then
 
 						if love.keypressed then
@@ -161,7 +162,13 @@ exit = quit
 function try(f, ef)
 
 	local s, e = pcall(f)
-	if not s then return (ef ~= nil and ef(e) or print(debug.traceback("Error: " .. e, 4):gsub("\t", "    "))) end
+	if not s then
+		if ef then
+			ef(e)
+		else
+			print(debug.traceback("Error: " .. e, 4):gsub("\t", "    "))
+		end
+	end
 
 	return e
 
@@ -171,7 +178,6 @@ function love.load() --LEF loading
 	love.filesystem.setIdentity("Excan")
 	math.randomseed(os.time()) --Set up a random seed
 	math.random() math.random() math.random() --toss the salad
-	require("conf") --load conf
 
 	function include(dir) --Not much slower, allows for re-loading of files.
 	
@@ -216,19 +222,17 @@ function love.load() --LEF loading
 	fontsize = 12 --the basic font size
 	sfont = love.graphics.newFont('VeraMono.ttf', 32) --basic font
 
-	SETTINGS = loadtable("config/settings.lua")
-	if SETTINGS.FULLSCREEN then
-		love.graphics.setMode(0, 0, true, SETTINGS.VSYNC, SETTINGS.FSAA)
-	else
-		love.graphics.setMode(SETTINGS.RESOLUTION.x, SETTINGS.RESOLUTION.y, false, SETTINGS.VSYNC, SETTINGS.FSAA)
-	end
+	LoadSettings()
+
+	--require("conf") --load conf
 
 	--TEXTFRMBUFFER = love.graphics.newCanvas(love.graphics.getWidth(), love.graphics.getHeight())
+
+	love.keyboard.setKeyRepeat(250, 50)
 
 	include("game/main.lua") --load the game
 	
 	hook.Call("Init") --call init
-	love.keyboard.setKeyRepeat(250, 100)
 end
 
 function love.update(dt) --update wrapper
@@ -396,3 +400,14 @@ function love.graphics.print(t, x, y, r, sx, sy)
 	g.draw(TEXTFRMBUFFER, 0, 0)
 
 end]]
+
+function LoadSettings()
+
+	SETTINGS = loadtable("config/settings.lua")
+	if SETTINGS.FULLSCREEN then
+		love.graphics.setMode(0, 0, true, SETTINGS.VSYNC, SETTINGS.FSAA)
+	else
+		love.graphics.setMode(SETTINGS.RESOLUTION.x, SETTINGS.RESOLUTION.y, false, SETTINGS.VSYNC, SETTINGS.FSAA)
+	end
+
+end

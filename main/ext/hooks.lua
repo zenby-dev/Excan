@@ -7,15 +7,16 @@ statehooks = {}
 function hook.Call(name, ...)
 
 	local ret = {}
+	local varg = ...
 	if GameHooks[name] then
-		local re = GameHooks[name](...)
+		local re = try(function() return GameHooks[name](varg) end)
 		if re then
 			table.insert(ret, re)
 		end
 	end
 	for k, v in pairs((hooks[name] or {})) do
 	
-		local re = v(...)
+		local re = try(function() return v(varg) end)
 		
 		if re then
 			table.insert(ret, re)
@@ -25,7 +26,7 @@ function hook.Call(name, ...)
 	if statehooks[GetState()] then
 		for k, v in pairs((statehooks[GetState()][name] or {})) do
 		
-			local re = v(...)
+			local re = try(function() return v(varg) end)
 			
 			if re then
 				table.insert(ret, re)

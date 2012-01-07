@@ -18,6 +18,8 @@ function GameHooks.Init()
 
 	--DERP
 
+	
+
 end
 
 --Menu.Main() --If you want to use my menu system, go ahead
@@ -34,6 +36,8 @@ function GameHooks.Update(dt) --default update
 	--CursorImage:SetPos(Vec2(love.mouse.getPosition()))
 
 	if pause then return end --necissary for pausing
+
+	if World and World.update then World:update(dt) end
 
 	for k, v in pairs(ents) do
 

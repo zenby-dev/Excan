@@ -241,6 +241,8 @@ function Menu.Options() --the ingame version of the menu
 
 		fs.write("config/settings.lua", tstr)
 
+		LoadSettings()
+
 		saved = true
 	end
 
@@ -251,17 +253,17 @@ function Menu.Options() --the ingame version of the menu
 			createbuttons()
 		end
 
-		Menu.Button(Vec2(40, h(0)), "Fullscreen: ["..OF(ts.FULLSCREEN).."]", function()
+		Menu.Button(Vec2(20, h(0)), "Fullscreen: ["..OF(ts.FULLSCREEN).."]", function()
 			ts.FULLSCREEN = not ts.FULLSCREEN
 			reload()
 		end)
 
-		Menu.Button(Vec2(40, h(1)), "Enable VSYNC: ["..OF(ts.VSYNC).."]", function()
+		Menu.Button(Vec2(20, h(1)), "Enable VSYNC: ["..OF(ts.VSYNC).."]", function()
 			ts.VSYNC = not ts.VSYNC
 			reload()
 		end)
 
-		Menu.Input(Vec2(40, h(2)), "FSAA Buffers ["..ts.FSAA.."] (0 - 10, default 0): ", function(text)
+		Menu.Input(Vec2(20, h(2)), "FSAA Buffers ["..ts.FSAA.."] (0 - 10, default 0): ", function(text)
 			local num = tonumber(text)
 
 			if num < 0 or num > 10 then return end
@@ -272,7 +274,7 @@ function Menu.Options() --the ingame version of the menu
 
 		local resx = ts.RESOLUTION.x.." ("..love.graphics.getWidth()..")"
 
-		Menu.Input(Vec2(40, h(3)), "Resolution X ["..resx.."]: ", function(text)
+		Menu.Input(Vec2(20, h(3)), "Resolution X ["..resx.."]: ", function(text)
 			local num = tonumber(text)
 
 			if num < 0 or num > 5000 then return end --set manually if you want to go higher
@@ -283,7 +285,7 @@ function Menu.Options() --the ingame version of the menu
 
 		local resy = ts.RESOLUTION.y.." ("..love.graphics.getHeight()..")"
 
-		Menu.Input(Vec2(40, h(4)), "           Y ["..resy.."]: ", function(text)
+		Menu.Input(Vec2(20, h(4)), "           Y ["..resy.."]: ", function(text)
 			local num = tonumber(text)
 
 			if num < 0 or num > 5000 then return end --set manually if you want to go higher
@@ -292,29 +294,38 @@ function Menu.Options() --the ingame version of the menu
 			reload()
 		end)
 
-		Menu.Button(Vec2(40, h(5)), "Save", function()
+		Menu.Button(Vec2(20, h(5)), "Save & Apply Changes", function()
 
 			save()
+			reload()
 
 		end)
 
-		Menu.Button(Vec2(40, h(6)), "Back (Restart to apply changes)", function()
+		local function leavemenu()
+			if Menu.OnMainMenu then
+				GoToMainMenu()
+			else
+				Menu.InGame()
+			end
+		end
+
+		Menu.Button(Vec2(20, h(6)), "Back", function()
 
 			if not saved then
 
 				YesNoBox("Save Changes?",
 				function()
 					save()
-					GoToMainMenu()
+					leavemenu()
 				end,
 				function()
-					GoToMainMenu()
+					leavemenu()
 				end,
 				true)
 
 			else
 
-				GoToMainMenu()
+				leavemenu()
 
 			end
 
@@ -330,6 +341,8 @@ function Menu.InGame() --the ingame version of the menu
 
 	Menu.Clear()
 
+	local function h(i) return 40 + (i * 60) end
+
 	--[[Menu.Button(Vec2(), "", function()
 
 
@@ -342,13 +355,13 @@ function Menu.InGame() --the ingame version of the menu
 
 	end)]]
 
-	--[[Menu.Button(Vec2(40, 360), "Options", function()
+	Menu.Button(Vec2(20, h(3)), "Options", function()
 
+		Menu.Options()
 
+	end)
 
-	end)]]
-
-	Menu.Button(Vec2(40, 200), "Main Menu", function()
+	Menu.Button(Vec2(20, h(4)), "Main Menu", function()
 
 		GoToMainMenu()
 
