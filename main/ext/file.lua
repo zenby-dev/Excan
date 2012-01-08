@@ -3,7 +3,7 @@ file = {}
 function file.Write(p, t)
 
 	local file, err = io.open(p, "w")
-	if err then error(err) end
+	if err then print(err) end
 	file:write(tostring(t))
 	file:close()
 
@@ -22,7 +22,7 @@ function file.Read(p)
 
 	if not file.Exists(p) then return "" end
 	local file, err = io.open(p, "r")
-	local r = file:read()
+	local r = file:read("*all")
 	file:close()
 	return r
 

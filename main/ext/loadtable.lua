@@ -5,10 +5,10 @@
 -- Time: 4:29 PM
 --
 
-function loadtable(text)
+function pr_loadtable(text)
 
 	if not text then return end
-	local s, e = pcall(loadstring(love.filesystem.read(text)))
+	local s, e = pcall(loadstring(text))
 	if not s then
 		--print(text)
 		--love.filesystem.write("OH POO.txt", text)
@@ -17,6 +17,18 @@ function loadtable(text)
 	end
 	--love.filesystem.write("OH POO.txt", text)
 	return e
+
+end
+
+function loadtable(path)
+
+	return pr_loadtable(love.filesystem.read(path))
+
+end
+
+function loadexternal(path)
+
+	return pr_loadtable(file.Read(path))
 
 end
 

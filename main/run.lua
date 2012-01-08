@@ -5,4 +5,4 @@
 -- Time: 5:39 PM
 --
 
-os.execute("love.exe ../main") --oh yeah.
+os.execute("love .") --oh yeah.

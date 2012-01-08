@@ -175,7 +175,7 @@ function try(f, ef)
 end
 
 function love.load() --LEF loading
-	love.filesystem.setIdentity("Excan")
+	--love.filesystem.setIdentity("Excan")
 	math.randomseed(os.time()) --Set up a random seed
 	math.random() math.random() math.random() --toss the salad
 
