@@ -6,6 +6,8 @@ function Entity:__init(phys)
 	
 	Ent.__init(self)
 
+	self.__type = "Entity"
+
 end
 
 function Entity:Update(dt)

@@ -2,8 +2,9 @@ class.PhysBase() --only EXTEND
 
 function PhysBase:__init(pos, mass)
 
-	self.body = love.physics.newBody(World, pos.x, pos.y, mass)
-	self.body:setInertia(mass / 10)
+	self.body = love.physics.newBody(World, pos.x, pos.y, mass ~= 0 and "dynamic" or "static")
+	self.body:setMassData(0, 0, mass, mass / 10)
+	--self.body:setInertia(mass / 10)
 
 end
 
@@ -41,10 +42,10 @@ class.PhysRect(PhysBase) --rectangle shape
 function PhysRect:__init(pos, mass, w, h)
 
 	PhysBase.__init(self, pos, mass)
-	self.shape = love.physics.newRectangleShape(self.body, 0, 0, w, h, 0)
-	self.shape:setFriction(1)
+	self.shape = love.physics.newRectangleShape(0, 0, w, h, 0)
 	self.size = Vec2(w, h)
 	self.debugdraw = true
+	self.fixture = love.physics.newFixture(self.body, self.shape, 1)
 
 end
 
@@ -55,7 +56,7 @@ function PhysRect:Draw()
 		g.setColor(255, 255, 255, 255)
     	g.push()
     	local x, y = self.body:getPosition()
-    	local x1,y1, x2,y2, x3,y3, x4,y4 = self.shape:getBoundingBox()
+    	local x1,y1, x2,y2, x3,y3, x4,y4 = self.shape:getPoints()
     	g.translate(x, y)
     	g.rotate(self.body:getAngle())
     	g.translate(-x, -y)
