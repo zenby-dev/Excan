@@ -185,6 +185,7 @@ function Menu.Main()
 
 		Menu.Clear()
 		Menu.OnMainMenu = false
+		StartNewGame()
 
 	end)
 

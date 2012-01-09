@@ -1,3 +1,4 @@
+requiredir("/game/ext")
 requiredir("/game/ents")
 
 function GameHooks.Init()
@@ -18,8 +19,6 @@ function GameHooks.Init()
 
 	--DERP
 
-	
-
 end
 
 --Menu.Main() --If you want to use my menu system, go ahead
@@ -37,7 +36,7 @@ function GameHooks.Update(dt) --default update
 
 	if pause then return end --necissary for pausing
 
-	if World and World.update then World:update(dt) end
+	if World then World:update(dt) end
 
 	for k, v in pairs(ents) do
 

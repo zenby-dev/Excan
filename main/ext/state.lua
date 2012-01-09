@@ -5,6 +5,7 @@ function SetState(s)
 
 	CurrentState = s
 
+	if not Ents then Ents = {} end
 	if not Ents[s] then Ents[s] = {} end
 	if not Worlds then Worlds = {} end
 	ents = Ents[s]

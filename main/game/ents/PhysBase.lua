@@ -13,9 +13,9 @@ class.PhysCircle(PhysBase) --circle shape
 function PhysCircle:__init(pos, mass, radius)
 
 	PhysBase.__init(self, pos, mass)
-	self.shape = love.physics.newCircleShape(self.body, 0, 0, radius)
-	self.shape:setFriction(1)
+	self.shape = love.physics.newCircleShape(0, 0, radius)
 	self.debugdraw = true
+	self.fixture = love.physics.newFixture(self.body, self.shape, 1)
 
 end
 
@@ -67,10 +67,10 @@ function PhysRect:Draw()
 end
 
 
-function CreatePhysWorld(minv, maxv, gv, setw)
+function CreatePhysWorld(gv, setw)
 
 	if not Worlds then Worlds = {} end
-	Worlds[GetState()] = love.physics.newWorld(minv.x, minv.y, maxv.x, maxv.y, gv.x, gv.y)
+	Worlds[GetState()] = love.physics.newWorld(gv.x, gv.y)
 	if setw then World = Worlds[GetState()] end
 	return Worlds[GetState()]
 
