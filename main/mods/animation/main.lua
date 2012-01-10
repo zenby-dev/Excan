@@ -31,6 +31,16 @@ function Animation:SetSpeed(s)
 
 end
 
+function Animation:SetScale(s)
+
+	for k, v in pairs(self.frames) do
+
+		v:SetScale(s)
+
+	end
+
+end
+
 function Animation:Reset()
 
 	self.frame = 1
@@ -91,6 +101,16 @@ end
 function DynSprite:SetRotation(r)
 
 	self.rotation = r
+
+end
+
+function DynSprite:SetScale(s)
+
+	for k, v in pairs(self.anims) do
+
+		v:SetScale(s)
+
+	end
 
 end
 

@@ -10,4 +10,20 @@ function StartNewGame()
 	SetState("explore")
 	Map()
 
+	DYNTEST = LoadSprite("game/sprites/player.lua")
+	DYNTEST:SetAnim("walk")
+	DYNTEST:SetScale(Vec2(10, 10))
+
 end
+
+hook.Add("Draw", "degaagas", function()
+
+	DYNTEST:Draw()
+
+end, "explore")
+
+hook.Add("Update", "degaagas", function(dt)
+
+	DYNTEST:Update(dt)
+
+end, "explore")

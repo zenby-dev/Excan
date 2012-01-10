@@ -4,6 +4,7 @@ function PhysBase:__init(pos, mass)
 
 	self.body = love.physics.newBody(World, pos.x, pos.y, mass ~= 0 and "dynamic" or "static")
 	self.body:setMassData(0, 0, mass, mass / 10)
+	self.body:setSleepingAllowed(false) --MANDATORY CAFFEINE INJECTIONS EVERY HOUR
 	--self.body:setInertia(mass / 10)
 
 end

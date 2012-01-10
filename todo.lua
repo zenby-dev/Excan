@@ -7,7 +7,7 @@
 
 --T O D O | L I S T
 
---TODO: Devise physics.
---TODO: Fix sprite loader
+--TODO: Devise physics. DONE
+--TODO: Fix sprite loader DONE
 --TODO: Get map loader working
 --TODO:

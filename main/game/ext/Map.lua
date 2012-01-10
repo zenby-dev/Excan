@@ -10,7 +10,7 @@ function Map(path)
 	--load map file...
 
 	--Create World
-	World = CreatePhysWorld(Vec2(0, 100)) --should be based on the smallest and largest parts of the map (or two insanely large vectors)
+	World = CreatePhysWorld(Vec2(0, 200)) --should be based on the smallest and largest parts of the map (or two insanely large vectors)
 
 end
 

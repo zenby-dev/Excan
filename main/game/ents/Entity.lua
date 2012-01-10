@@ -18,7 +18,7 @@ end
 
 function Entity:Draw()
 
-	self.phys:Draw()
+	--self.phys:Draw()
 
 end
 

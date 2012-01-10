@@ -1,58 +1,30 @@
-local function poss(p)
+function LoadSprite(path) --This makes everything INSANELY easy, just define the specifications of a sprite in an XML file, load it up.
 
-	local pos = p:split(",")
-	return Vec2(pos[1], pos[2])
+	local tab = loadtable(path)
 
-end
-
-function LoadSpriteFromXML(path) --This makes everything INSANELY easy, just define the specifications of a sprite in an XML file, load it up.
-
-	local text = love.filesystem.read(path, all)
-	local xml = XML.Collect(text)
-	
 	local dyn = DynSprite()
-	
-	for k, v in pairs(xml) do
-	
-		if v.label == "sprite" then
-		
-			local args = v.xarg
-			dyn:SetPos(poss(args.pos))
-			for k1, v1 in pairs(v) do
-			
-				if k1 ~= "xarg" and k1 ~= "label" then
-				
-					local frames = {}
-					
-					for k2, v2 in pairs(v1) do
-					
-						if k2 ~= "xarg" and k2 ~= "label" then
-						
-							local i = Image(args.file)
-							i:SetOrigin(poss(v2.xarg.origin))
-							i:SetSS(poss(v2.xarg.ss))
-							i:SetAnim(poss(v2.xarg.anim))
-							if v2.xarg.wep then
-								i.wepoff = poss(v2.xarg.wep)
-							end
-							table.insert(frames, i)
-						
-						end
-					
-					end
-					
-					local a = Animation(poss(args.pos), frames)
-					a:SetSpeed(tonumber(v1.xarg.speed))
-					dyn:AddAnim(v1.xarg.name, a)
-				
-				end
-			
-			end
-		
+
+	if tab.pos then dyn:SetPos(tab.pos) end
+
+	for _, anim in pairs(tab.con) do
+
+		local frames = {}
+		for _, frame in pairs(anim.con) do
+
+			local i = Image(tab.path)
+			i:SetOrigin(frame.origin)
+			i:SetSS(frame.ss)
+			i:SetAnim(frame.anim)
+			table.insert(frames, i)
+
 		end
-	
+
+		local a = Animation(tab.pos, frames)
+		a:SetSpeed(anim.speed)
+		dyn:AddAnim(anim.name, a)
+
 	end
-	
+
 	return dyn
 
 end
