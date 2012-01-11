@@ -9,5 +9,5 @@
 
 --TODO: Devise physics. DONE
 --TODO: Fix sprite loader DONE
---TODO: Get map loader working
+--TODO: Get map loader working IN PROGRESS
 --TODO:

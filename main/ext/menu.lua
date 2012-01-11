@@ -167,6 +167,7 @@ end]]
 
 function Menu.Main()
 
+	SetState("MainMenu")
 	Menu.OnMainMenu = true
 	Menu.Open = true
 	Menu.Clear()

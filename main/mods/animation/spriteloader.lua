@@ -1,6 +1,10 @@
 function LoadSprite(path) --This makes everything INSANELY easy, just define the specifications of a sprite in an XML file, load it up.
 
+	try(function() love.filesystem.exists(path) end)
+
 	local tab = loadtable(path)
+
+	try(function() love.filesystem.exists(tab.path) end)
 
 	local dyn = DynSprite()
 

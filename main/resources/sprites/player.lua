@@ -8,7 +8,7 @@
 return
 {
 	pos = Vec2(0, 0),
-	path = "game/sprites/basic.png",
+	path = "resources/sprites/basic.png",
 	con =
 	{
 		{

@@ -19,6 +19,9 @@ function GameHooks.Init()
 
 	--DERP
 
+	background = {}
+	foreground = {}
+
 end
 
 --Menu.Main() --If you want to use my menu system, go ahead

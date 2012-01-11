@@ -11,6 +11,32 @@ local function error_handler(msg)
 	print((debug.traceback("Error: " .. msg, 4):gsub("\t", "    ")))
 end
 
+function printerror(e) print((debug.traceback("Error: " .. e, 4):gsub("\t", "    "))) end
+
+local oldty = type
+function type(v)
+
+	local ot = oldty(v)
+	if ot ~= "table" then
+
+		return ot
+
+	else
+
+		if v.__type then
+
+			return v.__type
+
+		else
+
+			return "table"
+
+		end
+
+	end
+
+end
+
 local handler_names = {
 	kr = 'keyreleased',
 	mp = 'mousepressed',
