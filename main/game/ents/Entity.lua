@@ -1,12 +1,16 @@
 class.Entity(Ent)
 
-function Entity:__init(phys)
-
-	self.phys = phys
+function Entity:__init()
 	
 	Ent.__init(self)
 
 	self.__type = "Entity"
+
+end
+
+function Entity:SetPhys(phys)
+
+	self.phys = phys
 
 end
 
@@ -18,7 +22,7 @@ end
 
 function Entity:Draw()
 
-	--self.phys:Draw()
+	self.phys:Draw()
 
 end
 
@@ -40,5 +44,18 @@ function Entity:GetRot()
 
 end
 
-function PC(x, y, m, r) Entity(PhysCircle(Vec2(x, y), m, r)) end
-function PR(x, y, m, w, h) Entity(PhysRect(Vec2(x, y), m, w, h)) end
+function PC(x, y, m, r)
+
+	local ent = Entity()
+	ent:SetPhys(PhysCircle(ent, Vec2(x, y), m, r))
+	return ent
+
+end
+
+function PR(x, y, m, w, h)
+
+	local ent = Entity()
+	ent:SetPhys(PhysRect(ent, Vec2(x, y), m, w, h))
+	return ent
+
+end

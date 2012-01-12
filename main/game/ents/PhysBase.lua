@@ -12,12 +12,14 @@ end
 
 class.PhysCircle(PhysBase) --circle shape
 
-function PhysCircle:__init(pos, mass, radius)
+function PhysCircle:__init(par, pos, mass, radius)
 
 	PhysBase.__init(self, pos, mass)
 	self.shape = love.physics.newCircleShape(0, 0, radius)
 	self.debugdraw = true
 	self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+	self.fixture:setUserData(par.__entindex)
+	--print("set userdata to "..par.__entindex)
 
 end
 
@@ -32,6 +34,7 @@ function PhysCircle:Draw()
 		g.rotate(self.body:getAngle())
 		g.translate(-x, -y)
 		g.circle("fill", x, y, self.shape:getRadius())
+		g.setColor(255, 255, 255, 255)
 		g.pop()
 	end
 
@@ -40,13 +43,15 @@ end
 
 class.PhysRect(PhysBase) --rectangle shape
 
-function PhysRect:__init(pos, mass, w, h)
+function PhysRect:__init(par, pos, mass, w, h)
 
 	PhysBase.__init(self, pos, mass)
 	self.shape = love.physics.newRectangleShape(0, 0, w, h, 0)
 	self.size = Vec2(w, h)
 	self.debugdraw = true
 	self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+	self.fixture:setUserData(par.__entindex)
+	--print("set userdata to "..par.__entindex)
 
 end
 

@@ -10,7 +10,33 @@ function Map(path, state)
 	--Create World
 	local oldstate
 	if GetState() ~= state then oldstate = GetState() SetState(state) end
-	World = CreatePhysWorld(Vec2(0, 200)) --should be based on the smallest and largest parts of the map (or two insanely large vectors)
+	World = CreatePhysWorld(Vec2(0, 200))
+	World:setCallbacks(--Fixture A, Fixture B, Contact, normal impulse, tangent impulse
+	function (fa, fb, co, ni, ti) --Begin
+		if fa:getBody():getType() == "dynamic" then
+
+			print(fa:getUserData())
+
+		end
+		if fb:getBody():getType() == "dynamic" then
+
+			print(fb:getUserData())
+
+		end
+		print(co:getNormal())
+	end,
+
+	function (fa, fb, co, ni, ti) --end
+
+	end,
+
+	function (fa, fb, co, ni, ti) --presolve
+
+	end,
+
+	function (fa, fb, co, ni, ti) --postsolve
+
+	end)
 
 	LoadMapFile(path)
 
@@ -22,6 +48,8 @@ function ClearMap()
 
 	local oldstate
 	if GetState() ~= state then oldstate = GetState() SetState(state) end
+
+	CameraFocus = nil
 
 	for k, v in pairs(ents) do
 

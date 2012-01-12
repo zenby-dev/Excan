@@ -18,5 +18,22 @@ return
 			scale = Vec2(10, 10),
 			anim = "walk",
 		},
+		{
+			__type = "foreground",
+			path = "resources/maps/bfgrounds/testbg2.png",
+			scale = Vec2(1, 1),
+			depth = .5,
+		},
+		{
+			__type = "background",
+			path = "resources/maps/bfgrounds/testbg.png",
+			scale = Vec2(2, 2),
+			depth = 2,
+		},
+		{
+			__type = "Solid",
+			pos = Vec2(0, 960),
+			size = Vec2(1280, 90)
+		}
 	}
 }

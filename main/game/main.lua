@@ -41,32 +41,8 @@ function GameHooks.Update(dt) --default update
 
 	if World then World:update(dt) end
 
-	for k, v in pairs(ents) do
-
-		v:Update(dt)
-
-	end
-	
-	--Update stuff
-
 end
 
 function GameHooks.Draw() --default draw
-
-	local g = love.graphics --wheee
-
-	g.push()
-	
-	g.translate(-CameraPos.x, -CameraPos.y) --should be with all world elements
-	
-	for k, v in pairs(ents) do
-
-		v:Draw()
-
-	end
-	
-	g.pop()
-	
-	--CursorImage:Draw() --Should be last to draw, if you're using it
 
 end

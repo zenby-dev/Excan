@@ -16,7 +16,7 @@ function StartNewGame()
 
 end
 
-hook.Add("Draw", "degaagas", function()
+hook.Add("Draw", "DrawMain", function()
 
 	local g = love.graphics --wheee
 
@@ -30,7 +30,7 @@ hook.Add("Draw", "degaagas", function()
 
 		table.sort(background, function(a, b)
 
-			return a[1] < b[1]
+			return a[1] > b[1]
 
 		end)
 
@@ -38,9 +38,13 @@ hook.Add("Draw", "degaagas", function()
 
 			g.push()
 
+			--g.translate(-CameraPos.x, -CameraPos.y)
+
 			g.scale(1 / v[1], 1 / v[1])
 
-			g.translate((-CameraPos.x) * (v[1] - 1), (-CameraPos.y) * (v[1] - 1)) --should always be 0 when v[1] is 1
+			local ms = 1 / v[1] --1 / 100 = 0.01, 1 / 1 = 1
+
+			g.translate(CameraPos.x * (1 - ms), CameraPos.y * (1 - ms)) --approach 1 from 0 as depth increases
 
 			v[2]:Draw()
 
@@ -84,7 +88,7 @@ hook.Add("Draw", "degaagas", function()
 
 		table.sort(foreground, function(a, b)
 
-			return a[1] < b[1]
+			return a[1] > b[1]
 
 		end)
 
@@ -92,9 +96,13 @@ hook.Add("Draw", "degaagas", function()
 
 			g.push()
 
+			--g.translate(-CameraPos.x, -CameraPos.y)
+
 			g.scale(1 / v[1], 1 / v[1])
 
-			g.translate((-CameraPos.x) * (v[1] - 1), (-CameraPos.y) * (v[1] - 1)) --should always be 0 when v[1] is 1
+			local ms = 1 / v[1] --1 / 100 = 0.01, 1 / 1 = 1
+
+			g.translate(CameraPos.x * (1 - ms), CameraPos.y * (1 - ms)) --approach 1 from 0 as depth increases
 
 			v[2]:Draw()
 
@@ -108,7 +116,7 @@ hook.Add("Draw", "degaagas", function()
 
 end, "explore")
 
-hook.Add("Update", "degaagas", function(dt)
+hook.Add("Update", "UpdateMain", function(dt)
 
 	for k, v in pairs(ents) do
 
@@ -116,13 +124,20 @@ hook.Add("Update", "degaagas", function(dt)
 
 	end
 
+	local kd = love.keyboard.isDown
+	local speed = 300
+	if kd("w") then CameraPos = CameraPos + Vec2(0, -1) * dt * speed end
+	if kd("a") then CameraPos = CameraPos + Vec2(-1, 0) * dt * speed end
+	if kd("s") then CameraPos = CameraPos + Vec2(0, 1) * dt * speed end
+	if kd("d") then CameraPos = CameraPos + Vec2(1, 0) * dt * speed end
+
 	--Update stuff
 
 	--if player then love.graphics.setCaption(player:CurrentRegion().name or "None") end
 
 	if CameraFocus then
 
-		local vp = CameraFocus:GetPos() + Vec2(-sw / 2, -sh / 2)
+		local vp = CameraFocus:GetPos() + Vec2(-love.graphics.getWidth() / 2, -love.graphics.getHeight() / 2)
 
 		--[[if #background > 0 then
 
