@@ -435,5 +435,6 @@ function LoadSettings()
 	else
 		love.graphics.setMode(SETTINGS.RESOLUTION.x, SETTINGS.RESOLUTION.y, false, SETTINGS.VSYNC, SETTINGS.FSAA)
 	end
+	if Shader ~= nil and SETTINGS.ENABLESHADERS ~= nil then Shader.enabled = SETTINGS.ENABLESHADERS end
 
 end

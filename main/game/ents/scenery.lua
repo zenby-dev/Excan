@@ -22,6 +22,12 @@ end
 
 function Scenery:Draw()
 
+	local g = love.graphics
+	g.push()
+	--g.translate(150, 0)
 	self.sprite:Draw()
+	g.pop()
+
+	Shader.ComplexRender("Blur", function() self.sprite:Draw() end, (math.cos(love.timer.getMicroTime() / 2) + 1) * 64, math.sin(love.timer.getMicroTime() * 4) + 1.5)
 
 end

@@ -44,6 +44,14 @@ function Entity:GetRot()
 
 end
 
+function Entity:Collide(fi, co)
+
+	--hook.Add("Update", "FLY,ENT"..self.__entindex, function(dt)
+		--self:applyForce(0, -100000*dt)
+	--end)
+
+end
+
 function PC(x, y, m, r)
 
 	local ent = Entity()
@@ -59,3 +67,5 @@ function PR(x, y, m, w, h)
 	return ent
 
 end
+
+function UNS() PR(30, 30, 30, 32, 32) end

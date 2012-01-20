@@ -3,10 +3,12 @@ CameraFocuses = {}
 
 function SetState(s)
 
+	if s == nil then error("Whoa, problem with this here state: '"..tostring(s).."'") return end
+
 	CurrentState = s
 
-	if not Ents then Ents = {} end
-	if not Ents[s] then Ents[s] = {} end
+	if Ents == nil then Ents = {} end
+	if Ents[s] == nil then Ents[s] = {} end
 	if not Worlds then Worlds = {} end
 	ents = Ents[s]
 	

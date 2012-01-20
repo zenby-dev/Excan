@@ -10,13 +10,13 @@ function StartNewGame()
 	SetState("explore")
 	Map("resources/maps/testmap.lua", "explore")
 
-	DYNTEST = LoadSprite("resources/sprites/player.lua")
+	--[[DYNTEST = LoadSprite("resources/sprites/player.lua")
 	DYNTEST:SetAnim("walk")
-	DYNTEST:SetScale(Vec2(10, 10))
+	DYNTEST:SetScale(Vec2(10, 10))]]
 
 end
 
-hook.Add("Draw", "DrawMain", function()
+local function DrawMain()
 
 	local g = love.graphics --wheee
 
@@ -68,7 +68,7 @@ hook.Add("Draw", "DrawMain", function()
 
 	for k, v in pairs(ents) do
 
-		if v.layer and v.layer == nil or 0 then v:Draw() end
+		if v.layer and v.layer == (nil or 0) then v:Draw() end
 
 	end
 
@@ -114,9 +114,15 @@ hook.Add("Draw", "DrawMain", function()
 
 	g.pop()
 
-end, "explore")
+	g.print("FPS: "..math.floor(1 / love.timer.getDelta()), 5, 5)
+
+end
+
+hook.Add("Draw", "DrawMain", DrawMain, "explore")
 
 hook.Add("Update", "UpdateMain", function(dt)
+
+	Shader.Update(dt)
 
 	for k, v in pairs(ents) do
 

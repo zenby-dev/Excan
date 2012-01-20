@@ -10,6 +10,7 @@ Menu = {} --ZenX2's menu class. again, dangerous.
 Menu.Buttons = {} --Buttons
 Menu.Inputs = {}
 Menu.Images = {} --Images
+Menu.Texts = {}
 Menu.Font = love.graphics.newFont('VeraMono.ttf', 24)
 
 --Menu.LFont = love.graphics.newFont('VeraMono.ttf', 18)
@@ -28,6 +29,16 @@ function Menu.Button(p, t, f) --create a button
 	button.onClick = f
 
 	table.insert(Menu.Buttons, button)
+
+end
+
+function Menu.Text(p, t)
+
+	local text = goo.text:new(Menu.Holder)
+	text:setPos(p.x, p.y)
+	text:setText(t)
+
+	table.insert(Menu.Texts, text)
 
 end
 
@@ -72,6 +83,12 @@ function Menu.Clear() --no moar buttons
 
 	end
 	Menu.Buttons = {}
+	for k, v in pairs(Menu.Texts) do
+
+		v:removeFromParent()
+
+	end
+	Menu.Texts = {}
 	for k, v in pairs(Menu.Inputs) do
 
 		v[3]:removeFromParent()
@@ -243,7 +260,7 @@ function Menu.Options() --the ingame version of the menu
 
 		fs.write("config/settings.lua", tstr)
 
-		LoadSettings()
+		if LoadSettings ~= nil then LoadSettings() end
 
 		saved = true
 	end
@@ -265,7 +282,14 @@ function Menu.Options() --the ingame version of the menu
 			reload()
 		end)
 
-		Menu.Input(Vec2(20, h(2)), "FSAA Buffers ["..ts.FSAA.."] (0 - 10, default 0): ", function(text)
+		Menu.Button(Vec2(20, h(2)), "Enable Shaders: ["..OF(ts.ENABLESHADERS).."]", function()
+			ts.ENABLESHADERS = not ts.ENABLESHADERS
+			reload()
+		end)
+
+		Menu.Text(Vec2(10, h(1) + 5), "(May not work on some older computers)")
+
+		Menu.Input(Vec2(20, h(4)), "FSAA Buffers ["..ts.FSAA.."] (0 - 10, default 0): ", function(text)
 			local num = tonumber(text)
 
 			if num < 0 or num > 10 then return end
@@ -276,7 +300,7 @@ function Menu.Options() --the ingame version of the menu
 
 		local resx = ts.RESOLUTION.x.." ("..love.graphics.getWidth()..")"
 
-		Menu.Input(Vec2(20, h(3)), "Resolution X ["..resx.."]: ", function(text)
+		Menu.Input(Vec2(20, h(5)), "Resolution X ["..resx.."]: ", function(text)
 			local num = tonumber(text)
 
 			if num < 0 or num > 5000 then return end --set manually if you want to go higher
@@ -287,7 +311,7 @@ function Menu.Options() --the ingame version of the menu
 
 		local resy = ts.RESOLUTION.y.." ("..love.graphics.getHeight()..")"
 
-		Menu.Input(Vec2(20, h(4)), "           Y ["..resy.."]: ", function(text)
+		Menu.Input(Vec2(20, h(6)), "           Y ["..resy.."]: ", function(text)
 			local num = tonumber(text)
 
 			if num < 0 or num > 5000 then return end --set manually if you want to go higher
@@ -296,7 +320,7 @@ function Menu.Options() --the ingame version of the menu
 			reload()
 		end)
 
-		Menu.Button(Vec2(20, h(5)), "Save & Apply Changes", function()
+		Menu.Button(Vec2(20, h(7)), "Save & Apply Changes", function()
 
 			save()
 			reload()
@@ -311,7 +335,7 @@ function Menu.Options() --the ingame version of the menu
 			end
 		end
 
-		Menu.Button(Vec2(20, h(6)), "Back", function()
+		Menu.Button(Vec2(20, h(8)), "Back", function()
 
 			if not saved then
 

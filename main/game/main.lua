@@ -2,16 +2,13 @@ requiredir("/game/ext")
 requiredir("/game/ents")
 
 function GameHooks.Init()
-	
+
+	SetState("") --base state.
+
 	try(Menu.Main)
 
 	--GAME VARIABLES
 	pause = false
-
-	--love.mouse.setVisible(false) --grabbing and changing the mouse
-	--love.mouse.setGrab(true)
-	--CursorImage = Image("game/sprites/crosshair.png", Vec2(love.mouse.getPosition()))
-	--CursorImage:SetOrigin(Vec2(16, 16))
 
 	CameraPos = Vec2(0, 0) --the position of the camera (IMPORTANT!!!!)
 
@@ -21,6 +18,8 @@ function GameHooks.Init()
 
 	background = {}
 	foreground = {}
+
+	ClearMap()
 
 end
 

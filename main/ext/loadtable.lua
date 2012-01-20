@@ -61,7 +61,7 @@ function tabletostring(t)
 
 			local vt = type(v)
 
-			if vt == "table" and v.__type and v.__type == "Vec2" then
+			if vt == "Vec2" then
 
 				tab = tab.."Vec2("..v.x..", "..v.y..")"
 

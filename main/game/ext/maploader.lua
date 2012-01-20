@@ -96,10 +96,10 @@ MLTypeFuncs["foreground"] = function(var)
 	table.insert(foreground, {d, bg})
 
 end
-
+  
 MLTypeFuncs["Solid"] = function(var)
 
 	local ent = Entity()
-	ent:SetPhys(PhysRect(ent, var.pos + (var.size / 2), 0, var.size.x, var.size.y))
+	ent:SetPhys(PhysRect(ent, var.pos, 0, var.size.x, var.size.y))
 
 end

@@ -10,20 +10,13 @@ function Map(path, state)
 	--Create World
 	local oldstate
 	if GetState() ~= state then oldstate = GetState() SetState(state) end
-	World = CreatePhysWorld(Vec2(0, 200))
+	World = CreatePhysWorld(Vec2(0, 50))
 	World:setCallbacks(--Fixture A, Fixture B, Contact, normal impulse, tangent impulse
 	function (fa, fb, co, ni, ti) --Begin
-		if fa:getBody():getType() == "dynamic" then
-
-			print(fa:getUserData())
-
-		end
-		if fb:getBody():getType() == "dynamic" then
-
-			print(fb:getUserData())
-
-		end
-		print(co:getNormal())
+		local ae = ents[fa:getUserData()]
+		local be = ents[fb:getUserData()]
+		ae:Collide(fb, co)
+		be:Collide(fa, co)
 	end,
 
 	function (fa, fb, co, ni, ti) --end
@@ -38,16 +31,18 @@ function Map(path, state)
 
 	end)
 
+	ClearMap()
+
 	LoadMapFile(path)
 
 	if oldstate then SetState(oldstate) end
 
 end
 
-function ClearMap()
+function ClearMap(state)
 
 	local oldstate
-	if GetState() ~= state then oldstate = GetState() SetState(state) end
+	if GetState() ~= state and state ~= nil then oldstate = GetState() SetState(state) end
 
 	CameraFocus = nil
 
